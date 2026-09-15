@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <LycansGameDir Condition="'$(LycansGameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Lycans</LycansGameDir>
+    <LycansManagedDir Condition="'$(LycansManagedDir)' == ''">$(LycansGameDir)\Lycans_Data\Managed</LycansManagedDir>
+    <LycansBepInExCoreDir Condition="'$(LycansBepInExCoreDir)' == ''">$(LycansGameDir)\BepInEx\core</LycansBepInExCoreDir>
+    <LycansPluginsDir Condition="'$(LycansPluginsDir)' == ''">$(LycansGameDir)\BepInEx\plugins</LycansPluginsDir>
+    <AssemblySearchPaths>{CandidateAssemblyFiles};$(ReferencePath);{HintPathFromItem};{TargetFrameworkDirectory};{Registry:Software\Microsoft\.NETFramework,v$(TargetFrameworkVersion),AssemblyFoldersEx};{AssemblyFolders};{GAC};{RawFileName};$(LycansManagedDir);$(LycansBepInExCoreDir)</AssemblySearchPaths>
+  </PropertyGroup>
+</Project>

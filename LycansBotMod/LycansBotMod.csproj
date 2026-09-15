@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>LycansBotMod</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <RootNamespace>LycansBotMod</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LycansNewRoles">
+      <HintPath>$(LycansPluginsDir)\LycansNewRoles\LycansNewRoles.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="UnityEngine" />
+    <Reference Include="UnityEngine.CoreModule" />
+    <Reference Include="Assembly-CSharp" />
+    <Reference Include="Fusion.Runtime" />
+    <Reference Include="0Harmony" />
+    <Reference Include="Fusion.Sockets" />
+    <Reference Include="BepInEx" />
+  </ItemGroup>
+</Project>

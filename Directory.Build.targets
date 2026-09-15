@@ -1,0 +1,14 @@
+<Project>
+  <Target Name="ValidateLycansGameInstall" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(LycansManagedDir)')" Text="Lycans managed assemblies were not found at '$(LycansManagedDir)'. Set LycansGameDir or LycansManagedDir to the game installation." />
+    <Error Condition="!Exists('$(LycansBepInExCoreDir)')" Text="Lycans BepInEx core assemblies were not found at '$(LycansBepInExCoreDir)'. Set LycansGameDir or LycansBepInExCoreDir to the game installation." />
+  </Target>
+
+  <Target Name="DeployLycansPlugin" AfterTargets="Build" Condition="'$(DeployToLycans)' == 'true'">
+    <PropertyGroup>
+      <LycansPluginDeployDir>$(LycansPluginsDir)\$(AssemblyName)</LycansPluginDeployDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(LycansPluginDeployDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(LycansPluginDeployDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
