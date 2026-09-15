@@ -16,13 +16,13 @@
   <ItemGroup>
     <Reference Include="UnityEngine" />
     <Reference Include="UnityEngine.CoreModule" />
+    <Reference Include="UnityEngine.InputLegacyModule" />
+    <Reference Include="UnityEngine.UI" />
+    <Reference Include="Unity.TextMeshPro" />
     <Reference Include="Assembly-CSharp" />
     <Reference Include="Fusion.Runtime" />
     <Reference Include="0Harmony" />
     <Reference Include="Fusion.Sockets" />
     <Reference Include="BepInEx" />
-    <Reference Include="UnityEngine.UI" />
-    <Reference Include="Unity.TextMeshPro" />
-    <Reference Include="UnityEngine.InputLegacyModule" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>LycansHarmonyLogPatcher</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony" />
+    <Reference Include="Mono.Cecil" />
+  </ItemGroup>
+  <Target Name="DeployHarmonyLogPatcher" AfterTargets="Build" Condition="'$(DeployToLycans)' == 'true'">
+    <PropertyGroup>
+      <LycansPatchersDir>$(LycansBepInExCoreDir)\..\patchers</LycansPatchersDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(LycansPatchersDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(LycansPatchersDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
