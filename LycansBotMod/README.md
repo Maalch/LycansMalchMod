@@ -42,3 +42,13 @@ As the host, during Pregame:
 - `Keypad -` removes the most recently added bot slot (`BotSlotManager.RemoveLastBot`, via `GameManager.Rpc_DeletePlayer`).
 
 See `BotSlotManager.cs`, `BotSlotKeybindPatch.cs`, and `BotSlotAfterSpawnedPatch.cs` for the implementation.
+
+## Sharing game settings
+
+As the host, during Pregame:
+
+- `F9` copies a share code for the current `GameConfig` settings (roles, powers, events, potions, gadgets, accessories, and the other dropdowns/toggles) to the clipboard.
+- `F10` applies a share code from the clipboard, so another host can reproduce the same configuration.
+- The Game Settings screen also has a "Share Settings" button with the same Copy/Apply actions plus a visible code for pasting into chat.
+
+The code is a version-tagged, base64-encoded snapshot of `GameConfig`'s public dropdown/toggle fields; applying it only updates those live UI controls, so `GameConfig`'s existing listeners handle persisting the values normally. See `GameSettingsShareManager.cs`, `GameSettingsShareKeybindPatch.cs`, and `GameSettingsSharePanel.cs`.
