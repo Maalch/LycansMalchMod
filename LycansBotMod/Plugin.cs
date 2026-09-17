@@ -18,7 +18,7 @@ public class Plugin : BaseUnityPlugin
 		harmony = new Harmony("lycans.botmod");
 		harmony.PatchAll();
 		BotLogger.LogInfo((object)"Lycans Bot Mod loaded.");
-		BotSlotManager.LogUnsupported();
+		BotLogger.LogInfo((object)"Host: Pregame, press Keypad+ / Keypad- to add/remove a bot slot.");
 	}
 
 	private void OnDestroy()

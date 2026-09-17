@@ -1,12 +1,12 @@
 # Lycans Bot Mod Testing
 
-## Why a second client is required
+## Bot slots vs. a second client
 
-`LycansBotMod` cannot create a phantom player slot. In this Fusion build, a valid `PlayerRef` is issued only when a client connects to a game session. The game then creates the player's `PlayerController` and registers its matching `PlayerCustom` entry.
+`BotSlotManager` adds host-local bot slots by handing `GameManager.Instance.OnPlayerJoined` a synthetic `PlayerRef` (starting at 1000) instead of one issued by a connecting client. Because the host spawns the resulting `PlayerController`, it gets normal state authority, so it registers in `PlayerRegistry` and gets a `PlayerCustom` entry the same way a real player would (see `AddPlayerAddCustomPlayerPatch` in `LycansNewRoles`).
 
-Do not create a fake `PlayerRef`, add an entry directly to `PlayerCustomRegistry`, or spawn a player controller with `PlayerRef.None`. Those objects do not have a connected client's authority or the lifecycle required by the game, player registry, and UI.
+Bots never have **input authority** (no real client owns the connection), so they never move, act, or vote on their own, and `PlayerController.AfterSpawned`'s normal username/hat RPC path is skipped; `BotSlotAfterSpawnedPatch` fills that in directly for bot ids. Use bots for structural/UI tests that only need extra player *slots* to exist (player counts, meeting/target lists, kill/death handling aimed at a bot, win-condition checks).
 
-Use a real second client for tests that need another player: meetings, voting, role assignment, target-dependent effects, kills, death handling, and win conditions.
+Use a real second client for anything that requires the other side to act: voting, role/meeting flows driven by the second player, or effects that depend on real input.
 
 ## Prerequisites
 
@@ -17,14 +17,6 @@ Use a real second client for tests that need another player: meetings, voting, r
 If your game installation is not at the default Steam location, set `LycansGameDir` when building. The build derives the managed assemblies, BepInEx core, and plugin locations from that property.
 
 ## Build and deploy
-
-Close every running Lycans client, then build and deploy the Harmony log patcher from `LycansMalchMod\LycansHarmonyLogPatcher`:
-
-```powershell
-dotnet build LycansHarmonyLogPatcher.csproj -t:Rebuild -p:DeployToLycans=true
-```
-
-This installs `LycansHarmonyLogPatcher.dll` in `<LycansGameDir>\BepInEx\patchers`. It runs before BepInEx loads `LycansNewRoles` and sends Harmony debug output to `HarmonyLog.<process-id>.txt`, allowing each local game client to write independently.
 
 Build and deploy the Bot Mod from `LycansMalchMod\LycansBotMod`:
 
@@ -61,9 +53,9 @@ Before a multiplayer behavior test, verify all of the following:
 
 - Both clients are visible as separate players in the game.
 - The host log contains `Lycans Bot Mod loaded.`
-- Each client has its own `HarmonyLog.<process-id>.txt` file in the game directory; no client reports a sharing violation for `HarmonyLog.txt`.
-- The host log contains the expected warning that real-slot bots are disabled. This confirms the mod is not attempting an invalid synthetic-player path.
 - Both participants are available in meeting and target-selection UI.
+
+> Running two local clients at once may hit a sharing violation on `HarmonyLog.txt` (LycansNewRoles enables HarmonyFileLog). The `LycansHarmonyLogPatcher` project that worked around this has been removed for now; reintroduce it if two-client testing needs it again.
 
 When a real client joins, the normal game lifecycle gives it a Fusion `PlayerRef`, creates its `PlayerController`, and registers its custom data. This is the required state for valid multiplayer tests.
 
@@ -76,4 +68,13 @@ With both clients connected, use normal gameplay to test:
 - Kill and death behavior, including the normal callback and role handling paths.
 - Votes, meeting behavior, role interactions, and victory conditions that enumerate active players.
 
-If two game clients cannot run on the same PC, host on one machine and join with a real client on a second machine. Do not substitute a fabricated player slot.
+If two game clients cannot run on the same PC, host on one machine and join with a real client on a second machine.
+
+## Bot controls
+
+As the host, during Pregame:
+
+- `Keypad +` spawns a bot slot (`BotSlotKeybindPatch` -> `BotSlotManager.SpawnBot`).
+- `Keypad -` removes the most recently added bot slot (`BotSlotManager.RemoveLastBot`, via `GameManager.Rpc_DeletePlayer`).
+
+See `BotSlotManager.cs`, `BotSlotKeybindPatch.cs`, and `BotSlotAfterSpawnedPatch.cs` for the implementation.
