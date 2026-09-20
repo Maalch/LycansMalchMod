@@ -52,3 +52,12 @@ As the host, during Pregame:
 - The Game Settings screen also has a "Share Settings" button with the same Copy/Apply actions plus a visible code for pasting into chat.
 
 The code is a version-tagged, base64-encoded snapshot of `GameConfig`'s public dropdown/toggle fields; applying it only updates those live UI controls, so `GameConfig`'s existing listeners handle persisting the values normally. See `GameSettingsShareManager.cs`, `GameSettingsShareKeybindPatch.cs`, and `GameSettingsSharePanel.cs`.
+
+## Self-kill debug key
+
+As the host, during Play:
+
+- `F4` kills your own player, recording the death as `STARVATION` (`SelfKillDebugKeybindPatch` -> `PlayerController.Rpc_Kill`).
+- `F3` kills the player you're currently looking at/targeting (`PlayerController.targetObject`), recording the death as `BULLET_HUMAN` (`KillTargetedPlayerDebugKeybindPatch` -> `PlayerController.Rpc_Kill`).
+
+See `SelfKillDebugKeybindPatch.cs` and `KillTargetedPlayerDebugKeybindPatch.cs` for the implementation.

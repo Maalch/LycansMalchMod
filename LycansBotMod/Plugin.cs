@@ -19,6 +19,9 @@ public class Plugin : BaseUnityPlugin
 		harmony.PatchAll();
 		BotLogger.LogInfo((object)"Lycans Bot Mod loaded.");
 		BotLogger.LogInfo((object)"Host: Pregame, press Keypad+ / Keypad- to add/remove a bot slot.");
+		BotLogger.LogInfo((object)"Host: Play, press F1 to spawn a scroll, F2 to spawn a potion.");
+		BotLogger.LogInfo((object)"Host: Play, press F3 to kill your currently targeted player (recorded as BULLET_HUMAN).");
+		BotLogger.LogInfo((object)"Host: Play, press F4 to kill yourself (recorded as STARVATION).");
 	}
 
 	private void OnDestroy()
