@@ -58,6 +58,6 @@ The code is a version-tagged, base64-encoded snapshot of `GameConfig`'s public d
 As the host, during Play:
 
 - `F4` kills your own player, recording the death as `STARVATION` (`SelfKillDebugKeybindPatch` -> `PlayerController.Rpc_Kill`).
-- `F3` kills the player you're currently looking at/targeting (`PlayerController.targetObject`), recording the death as `BULLET_HUMAN` (`KillTargetedPlayerDebugKeybindPatch` -> `PlayerController.Rpc_Kill`).
+- `F3` kills the player you're currently aiming at (`PlayerController._gunTargetObject`, a role-agnostic aim raycast — unlike `targetObject`, which is gated by role-specific interact permissions), recording the death as `BULLET_HUMAN` (`KillTargetedPlayerDebugKeybindPatch` -> `PlayerController.Rpc_Kill`).
 
 See `SelfKillDebugKeybindPatch.cs` and `KillTargetedPlayerDebugKeybindPatch.cs` for the implementation.

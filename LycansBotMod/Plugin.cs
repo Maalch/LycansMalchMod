@@ -21,6 +21,7 @@ public class Plugin : BaseUnityPlugin
 		BotLogger.LogInfo((object)"Host: Pregame, press Keypad+ / Keypad- to add/remove a bot slot.");
 		BotLogger.LogInfo((object)"Host: Play, press F1 to spawn a scroll, F2 to spawn a potion.");
 		BotLogger.LogInfo((object)"Host: Play, press F3 to kill your currently targeted player (recorded as BULLET_HUMAN).");
+		BotLogger.LogInfo((object)"LycansUtility.AddLogOnlyForMe is patched to always log, regardless of Steam ID.");
 		BotLogger.LogInfo((object)"Host: Play, press F4 to kill yourself (recorded as STARVATION).");
 	}
 
