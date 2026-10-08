@@ -50,15 +50,7 @@ internal class ShowTargetedPlayerRoleDebugKeybindPatch
 				return;
 			}
 
-			string roleDescription = targetPlayer.Role + " / " + PlayerCustom.GetNewPrimaryRoleString(targetCustom);
-			if (targetCustom.PrimaryRolePower != PlayerCustom.PlayerPrimaryRolePower.None)
-			{
-				roleDescription += " / " + PlayerCustom.GetPrimaryRolePowerString(targetCustom.PrimaryRolePower);
-			}
-			if (targetCustom.SecondaryRole != PlayerCustom.PlayerSecondaryRole.None)
-			{
-				roleDescription += " / " + PlayerCustom.GetSecondaryRoleString(targetCustom.SecondaryRole);
-			}
+			string roleDescription = PlayerRoleDescriptionFormatter.Format(targetPlayer, targetCustom);
 
 			Plugin.BotLogger.LogInfo((object)("ShowTargetedPlayerRoleDebugKeybindPatch: " + targetPlayer.PlayerData.Username + " is " + roleDescription));
 		}
@@ -66,5 +58,52 @@ internal class ShowTargetedPlayerRoleDebugKeybindPatch
 		{
 			Plugin.BotLogger.LogError((object)("ShowTargetedPlayerRoleDebugKeybindPatch error: " + e));
 		}
+	}
+}
+
+[HarmonyPatch(typeof(PlayerController), "CheckPlayerRayCast")]
+internal class ShowTargetedPlayerRoleHoverPatch
+{
+	private static void Postfix(PlayerController targetPlayer, float distance, PlayerController __instance)
+	{
+		try
+		{
+			if ((object)targetPlayer == null || !__instance.Object.HasInputAuthority || GameManager.LocalGameState != GameState.EGameState.Play || distance >= 10f || targetPlayer.Ref == __instance.Ref)
+			{
+				return;
+			}
+
+			PlayerCustom targetCustom = PlayerCustomRegistry.GetPlayer(targetPlayer.Ref);
+			if ((object)targetCustom == null)
+			{
+				return;
+			}
+
+			string roleDescription = PlayerRoleDescriptionFormatter.Format(targetPlayer, targetCustom);
+			GameManager.Instance.gameUI.UpdateUsername(targetPlayer.PlayerData.Username + " / " + roleDescription);
+			GameManager.Instance.gameUI.ShowUsername(true);
+		}
+		catch (Exception e)
+		{
+			Plugin.BotLogger.LogError((object)("ShowTargetedPlayerRoleHoverPatch error: " + e));
+		}
+	}
+}
+
+internal static class PlayerRoleDescriptionFormatter
+{
+	internal static string Format(PlayerController targetPlayer, PlayerCustom targetCustom)
+	{
+		string roleDescription = targetPlayer.Role + " / " + PlayerCustom.GetNewPrimaryRoleString(targetCustom);
+		if (targetCustom.PrimaryRolePower != PlayerCustom.PlayerPrimaryRolePower.None)
+		{
+			roleDescription += " / " + PlayerCustom.GetPrimaryRolePowerString(targetCustom.PrimaryRolePower);
+		}
+		if (targetCustom.SecondaryRole != PlayerCustom.PlayerSecondaryRole.None)
+		{
+			roleDescription += " / " + PlayerCustom.GetSecondaryRoleString(targetCustom.SecondaryRole);
+		}
+
+		return roleDescription;
 	}
 }
