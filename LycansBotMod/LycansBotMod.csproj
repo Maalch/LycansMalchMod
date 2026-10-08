@@ -18,6 +18,7 @@
     <Reference Include="UnityEngine.CoreModule" />
     <Reference Include="UnityEngine.InputLegacyModule" />
     <Reference Include="UnityEngine.IMGUIModule" />
+    <Reference Include="UnityEngine.TextRenderingModule" />
     <Reference Include="UnityEngine.UI" />
     <Reference Include="Unity.TextMeshPro" />
     <Reference Include="Assembly-CSharp" />

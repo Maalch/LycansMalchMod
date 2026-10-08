@@ -59,6 +59,13 @@ As the host, during Play:
 
 - `F4` kills your own player, recording the death as `STARVATION` (`SelfKillDebugKeybindPatch` -> `PlayerController.Rpc_Kill`).
 - `F3` kills the player you're currently aiming at (`PlayerController._gunTargetObject`, a role-agnostic aim raycast — unlike `targetObject`, which is gated by role-specific interact permissions), recording the death as `BULLET_HUMAN` (`KillTargetedPlayerDebugKeybindPatch` -> `PlayerController.Rpc_Kill`).
-- `F5` logs the role (base camp, solo role, primary role power, and secondary role) of the player you're currently aiming at, using the same aim raycast as `F3`. Any player can use this, not just the host. See `ShowTargetedPlayerRoleDebugKeybindPatch.cs`.
 
 See `SelfKillDebugKeybindPatch.cs` and `KillTargetedPlayerDebugKeybindPatch.cs` for the implementation.
+
+## Targeted player role overlay
+
+During Play, aim at another player to automatically display their name and role (base camp, solo role, primary role power, and secondary role) below the crosshair. No key press is needed; this replaces the former `F5` log action. Any local player can use this, not just the host.
+
+The overlay uses the same role-independent aim raycast as `F3`, so it follows the crosshair rather than a free mouse cursor. It disappears when you look away, aim at a non-player object, die, or leave Play. If custom role data is not available yet, it displays "Role data unavailable." See `ShowTargetedPlayerRoleDebugKeybindPatch.cs`.
+
+To check in-game, aim at two different bots in turn, look away, and leave Play. Confirm the name and role update immediately and the overlay hides when there is no valid target.
