@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace LycansBotMod;
+namespace LycansGameSettingShare;
 
 [HarmonyPatch(typeof(GameSettingsUI), "Start")]
 internal class GameSettingsSharePanelPatch
@@ -48,7 +48,7 @@ internal class GameSettingsSharePanel : MonoBehaviour
 		}
 		catch (Exception exception)
 		{
-			Plugin.BotLogger.LogError((object)("Unable to create game settings share panel: " + exception));
+			Plugin.ShareLogger.LogError((object)("Unable to create game settings share panel: " + exception));
 		}
 	}
 

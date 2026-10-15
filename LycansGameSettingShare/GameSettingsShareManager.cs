@@ -8,7 +8,7 @@ using LycansNewRoles;
 using TMPro;
 using UnityEngine.UI;
 
-namespace LycansBotMod;
+namespace LycansGameSettingShare;
 
 // Encodes/decodes GameConfig's public static dropdown/toggle/dictionary fields as a shareable clipboard code.
 internal static class GameSettingsShareManager
@@ -108,7 +108,7 @@ internal static class GameSettingsShareManager
 			catch (Exception e)
 			{
 				skippedCount++;
-				Plugin.BotLogger.LogWarning((object)("GameSettingsShareManager: skipped entry '" + key + "': " + e.Message));
+				Plugin.ShareLogger.LogWarning((object)("GameSettingsShareManager: skipped entry '" + key + "': " + e.Message));
 			}
 		}
 

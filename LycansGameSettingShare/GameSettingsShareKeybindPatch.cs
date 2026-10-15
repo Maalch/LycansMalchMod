@@ -2,7 +2,7 @@ using System;
 using HarmonyLib;
 using UnityEngine;
 
-namespace LycansBotMod;
+namespace LycansGameSettingShare;
 
 [HarmonyPatch(typeof(PlayerController), "Update")]
 internal class GameSettingsShareKeybindPatch
@@ -32,7 +32,7 @@ internal class GameSettingsShareKeybindPatch
 		}
 		catch (Exception e)
 		{
-			Plugin.BotLogger.LogError((object)("GameSettingsShareKeybindPatch error: " + e));
+			Plugin.ShareLogger.LogError((object)("GameSettingsShareKeybindPatch error: " + e));
 		}
 	}
 
@@ -45,7 +45,7 @@ internal class GameSettingsShareKeybindPatch
 		string code = GameSettingsShareManager.ExportCode(gameSettingsUI);
 		GUIUtility.systemCopyBuffer = code;
 		ShowMessageWithCursor("Game settings code copied to clipboard.");
-		Plugin.BotLogger.LogInfo((object)"GameSettingsShareKeybindPatch: settings code copied to clipboard.");
+		Plugin.ShareLogger.LogInfo((object)"GameSettingsShareKeybindPatch: settings code copied to clipboard.");
 	}
 
 	private static void ApplySettingsFromClipboard()
@@ -55,12 +55,12 @@ internal class GameSettingsShareKeybindPatch
 		if (GameSettingsShareManager.TryApplyCode(gameSettingsUI, code, out int appliedCount, out int skippedCount, out string error))
 		{
 			ShowMessageWithCursor($"Applied {appliedCount} game settings from clipboard.");
-			Plugin.BotLogger.LogInfo((object)$"GameSettingsShareKeybindPatch: applied {appliedCount} settings, skipped {skippedCount}.");
+			Plugin.ShareLogger.LogInfo((object)$"GameSettingsShareKeybindPatch: applied {appliedCount} settings, skipped {skippedCount}.");
 		}
 		else
 		{
 			ShowMessageWithCursor("Could not apply settings code: " + error);
-			Plugin.BotLogger.LogWarning((object)("GameSettingsShareKeybindPatch: failed to apply clipboard code: " + error));
+			Plugin.ShareLogger.LogWarning((object)("GameSettingsShareKeybindPatch: failed to apply clipboard code: " + error));
 		}
 	}
 
@@ -95,7 +95,7 @@ internal class GameSettingsShareMessageClosedPatch
 		}
 		catch (Exception e)
 		{
-			Plugin.BotLogger.LogError((object)("GameSettingsShareMessageClosedPatch error: " + e));
+			Plugin.ShareLogger.LogError((object)("GameSettingsShareMessageClosedPatch error: " + e));
 		}
 	}
 }
